@@ -14,12 +14,12 @@ spec:
   revisionHistoryLimit: {{ .Values.shlink.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app: shlink
+      app: shlink-server
     {{- include "shlink.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: shlink
+        app: shlink-server
       {{- include "shlink.selectorLabels" . | nindent 8 }}
     spec:
       containers:
@@ -50,8 +50,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "shlink.fullname" . }}-web-client
-  labels:
-    app: shlink-web-client
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
   strategy:
