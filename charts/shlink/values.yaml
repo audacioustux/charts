@@ -24,16 +24,10 @@ shlink:
       tag: "4.1"
     resources:
       limits:
-        memory: 512Mi
+        memory: 1Gi
       requests:
-        cpu: 200m
-        memory: 256Mi
-  autoscaling:
-    enabled: false
-    maxReplicas: 5
-    minReplicas: 1
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
+        cpu: 50m
+        memory: 512Mi
 webClient:
   ports:
   - port: 80
@@ -45,8 +39,8 @@ webClient:
       tag: "4.1"
     resources:
       limits:
-        memory: 128Mi
-      requests:
-        cpu: 20m
         memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
   type: ClusterIP
