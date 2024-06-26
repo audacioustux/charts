@@ -28,6 +28,12 @@ shlink:
       requests:
         cpu: 200m
         memory: 256Mi
+  autoscaling:
+    enabled: false
+    maxReplicas: 5
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
 webClient:
   ports:
   - port: 80

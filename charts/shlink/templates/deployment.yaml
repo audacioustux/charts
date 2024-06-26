@@ -1,12 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "shlink.fullname" . }}-shlink
+  name: {{ include "shlink.fullname" . }}-server
   labels:
     app: shlink
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.shlink.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   revisionHistoryLimit: {{ .Values.shlink.revisionHistoryLimit }}
   selector:
     matchLabels:
@@ -50,6 +54,11 @@ metadata:
     app: shlink-web-client
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: shlink-web-client
