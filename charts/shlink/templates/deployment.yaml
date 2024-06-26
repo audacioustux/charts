@@ -50,6 +50,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "shlink.fullname" . }}-web-client
+  labels:
+    app: shlink-web-client
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
   strategy:
