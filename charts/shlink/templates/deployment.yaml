@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "shlink.fullname" . }}-server
   labels:
-    app: shlink
+    app: shlink-server
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
   strategy:
