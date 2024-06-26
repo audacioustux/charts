@@ -1,9 +1,12 @@
 config:
   dbDriver: mysql
+  dbHost: shlink-mysql
   defaultDomain: "sl.example.com"
   isHttpsEnabled: "true"
 kubernetesClusterDomain: cluster.local
 secret:
+  dbUser: shlink
+  dbPassword: shlink
   geoliteLicenseKey: ""
   initialApiKey: ""
 server:
