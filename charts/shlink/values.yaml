@@ -26,7 +26,7 @@ shlink:
       limits:
         memory: 1Gi
       requests:
-        cpu: 50m
+        cpu: 100m
         memory: 256Mi
 webClient:
   ports:
