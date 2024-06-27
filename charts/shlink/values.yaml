@@ -1,5 +1,5 @@
 config:
-  shellVerbosity: 0
+  # shellVerbosity: 3
   dbDriver: mysql
   dbHost: shlink-mysql
   defaultDomain: "sl.example.com"
