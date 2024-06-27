@@ -45,6 +45,13 @@ spec:
             path: /rest/health
             port: http
         resources: {{- toYaml .Values.shlink.shlinkServer.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/shlink/data
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ include "shlink.fullname" . }}-data
 ---
 apiVersion: apps/v1
 kind: Deployment
