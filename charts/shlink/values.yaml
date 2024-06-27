@@ -33,7 +33,7 @@ shlink:
         memory: 1Gi
       requests:
         cpu: 100m
-        memory: 256Mi
+        memory: 512Mi
 webClient:
   ports:
   - port: 80
