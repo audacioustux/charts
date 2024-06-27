@@ -1,5 +1,5 @@
 config:
-  # shellVerbosity: 3
+  shellVerbosity: 0
   dbDriver: mysql
   dbHost: shlink-mysql
   defaultDomain: "sl.example.com"
@@ -31,7 +31,7 @@ shlink:
       limits:
         memory: 1Gi
       requests:
-        cpu: 250m
+        cpu: 200m
         memory: 512Mi
 webClient:
   ports:
