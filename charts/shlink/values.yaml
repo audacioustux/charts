@@ -5,6 +5,7 @@ config:
   defaultDomain: "sl.example.com"
   isHttpsEnabled: true
   anonymizeRemoteAddr: false
+  skipInitialGeoliteDownload: false
   # redisServers: shlink-redis
   # redisPubSubEnabled: true
 kubernetesClusterDomain: cluster.local

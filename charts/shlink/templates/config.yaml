@@ -11,6 +11,7 @@ data:
   DEFAULT_DOMAIN: {{ .Values.config.defaultDomain | quote }}
   IS_HTTPS_ENABLED: {{ .Values.config.isHttpsEnabled | quote }}
   ANONYMIZE_REMOTE_ADDR: {{ .Values.config.anonymizeRemoteAddr | quote }}
+  SKIP_INITIAL_GEOLITE_DOWNLOAD: {{ .Values.config.skipInitialGeoliteDownload | quote }}
   {{- if .Values.config.redisServers }}
   REDIS_SERVERS: {{ .Values.config.redisServers | quote }}
   {{- end }}
