@@ -11,6 +11,7 @@ config:
   # redisPubSubEnabled: true
   cacheNamespace: shlink
   disableIpTracking: false
+  disableTracking: false
 kubernetesClusterDomain: cluster.local
 secret:
   dbUser: shlink
