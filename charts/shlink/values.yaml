@@ -9,6 +9,8 @@ config:
   skipInitialGeoliteDownload: false
   # redisServers: shlink-redis
   # redisPubSubEnabled: true
+  cacheNamespace: shlink
+  disableIpTracking: false
 kubernetesClusterDomain: cluster.local
 secret:
   dbUser: shlink

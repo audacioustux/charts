@@ -18,3 +18,5 @@ data:
   {{- if .Values.config.redisPubSubEnabled }}
   REDIS_PUB_SUB_ENABLED: {{ .Values.config.redisPubSubEnabled | quote }}
   {{- end }}
+  CACHE_NAMESPACE: {{ .Values.config.cacheNamespace | quote }}
+  DISABLE_IP_TRACKING: {{ .Values.config.disableIpTracking | quote }}
