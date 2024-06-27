@@ -4,6 +4,7 @@ config:
   dbHost: shlink-mysql
   defaultDomain: "sl.example.com"
   isHttpsEnabled: true
+  anonymizeRemoteAddr: false
   # redisServers: shlink-redis
   # redisPubSubEnabled: true
 kubernetesClusterDomain: cluster.local
