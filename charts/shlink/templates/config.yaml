@@ -5,7 +5,7 @@ metadata:
   labels:
   {{- include "shlink.labels" . | nindent 4 }}
 data:
-  SHELL_VERBOSITY: {{ .Values.config.shellVerbosity | quote }}
+  SHELL_VERBOSITY: {{ .Values.config.shellVerbosity }}
   DB_DRIVER: {{ .Values.config.dbDriver | quote }}
   DB_HOST: {{ .Values.config.dbHost | quote }}
   DEFAULT_DOMAIN: {{ .Values.config.defaultDomain | quote }}
