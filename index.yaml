@@ -3,6 +3,16 @@ entries:
   shlink:
   - apiVersion: v2
     appVersion: "4.1"
+    created: "2024-06-27T15:44:39.290123262Z"
+    description: A Helm chart for Kubernetes
+    digest: 037481d81156ad2a8e5c071ada9407390f114c68b894794eb73642f82a4f5243
+    name: shlink
+    type: application
+    urls:
+    - https://github.com/audacioustux/charts/releases/download/shlink-4.1.29/shlink-4.1.29.tgz
+    version: 4.1.29
+  - apiVersion: v2
+    appVersion: "4.1"
     created: "2024-06-27T14:09:44.742989417Z"
     description: A Helm chart for Kubernetes
     digest: 5f7dfd01d2f2facb83db7643de1f014b669d42f3daa71c02bd28b130e66e2a1d
@@ -241,4 +251,4 @@ entries:
     urls:
     - https://github.com/audacioustux/charts/releases/download/shlink-4.1.3/shlink-4.1.3.tgz
     version: 4.1.3
-generated: "2024-06-27T14:09:44.743187268Z"
+generated: "2024-06-27T15:44:39.290295022Z"
