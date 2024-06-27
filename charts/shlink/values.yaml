@@ -24,7 +24,7 @@ server:
     targetPort: http
   type: ClusterIP
 persistence: {}
-  # storageClass: ""
+  storageClass: ""
 shlink:
   revisionHistoryLimit: 5
   shlinkServer:
