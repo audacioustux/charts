@@ -22,7 +22,6 @@ server:
     targetPort: http
   type: ClusterIP
 shlink:
-  replicas: 1
   revisionHistoryLimit: 5
   shlinkServer:
     image:
