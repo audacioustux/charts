@@ -8,4 +8,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  storageClassName: {{ required "persistence.storageClass is required" .Values.persistence.storageClass }}

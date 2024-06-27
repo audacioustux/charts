@@ -23,7 +23,7 @@ server:
     protocol: TCP
     targetPort: http
   type: ClusterIP
-persistence: {}
+persistence: 
   storageClass: ""
 shlink:
   revisionHistoryLimit: 5
