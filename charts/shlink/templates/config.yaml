@@ -9,5 +9,9 @@ data:
   DB_HOST: {{ .Values.config.dbHost | quote }}
   DEFAULT_DOMAIN: {{ .Values.config.defaultDomain | quote }}
   IS_HTTPS_ENABLED: {{ .Values.config.isHttpsEnabled | quote }}
+  {{- if .Values.config.redisServers }}
   REDIS_SERVERS: {{ .Values.config.redisServers | quote }}
+  {{- end }}
+  {{- if .Values.config.redisPubSubEnabled }}
   REDIS_PUB_SUB_ENABLED: {{ .Values.config.redisPubSubEnabled | quote }}
+  {{- end }}
