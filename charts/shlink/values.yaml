@@ -4,9 +4,9 @@ config:
   dbHost: shlink-mysql
   defaultDomain: "sl.example.com"
   isHttpsEnabled: true
-  anonymizeRemoteAddr: true
+  anonymizeRemoteAddr: false
   # if set to true, but want precise geolocation data, set anonymousRemoteAddr to false
-  skipInitialGeoliteDownload: false
+  skipInitialGeoliteDownload: true
   # redisServers: shlink-redis
   # redisPubSubEnabled: true
   cacheNamespace: shlink
@@ -36,8 +36,8 @@ shlink:
       limits:
         memory: 1Gi
       requests:
-        cpu: 500m
-        memory: 512Mi
+        cpu: 100m
+        memory: 256Mi
 webClient:
   ports:
   - port: 80
