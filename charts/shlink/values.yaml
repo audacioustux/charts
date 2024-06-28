@@ -5,10 +5,9 @@ config:
   defaultDomain: "sl.example.com"
   isHttpsEnabled: true
   anonymizeRemoteAddr: true
-  # if set to true, but want precise geolocation data, set anonymousRemoteAddr to false
   skipInitialGeoliteDownload: false
-  # redisServers: shlink-redis
-  # redisPubSubEnabled: true
+  redisServers: shlink-redis
+  redisPubSubEnabled: true
   cacheNamespace: shlink
   disableIpTracking: false
   disableTracking: false
