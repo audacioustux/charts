@@ -12,8 +12,12 @@ data:
   IS_HTTPS_ENABLED: {{ .Values.config.isHttpsEnabled | quote }}
   ANONYMIZE_REMOTE_ADDR: {{ .Values.config.anonymizeRemoteAddr | quote }}
   SKIP_INITIAL_GEOLITE_DOWNLOAD: {{ .Values.config.skipInitialGeoliteDownload | quote }}
+  {{- if .Values.config.redisServers }}
   REDIS_SERVERS: {{ .Values.config.redisServers | quote }}
+  {{- end }}
+  {{- if .Values.config.redisPubSubEnabled }}
   REDIS_PUB_SUB_ENABLED: {{ .Values.config.redisPubSubEnabled | quote }}
+  {{- end }}
   CACHE_NAMESPACE: {{ .Values.config.cacheNamespace | quote }}
   DISABLE_IP_TRACKING: {{ .Values.config.disableIpTracking | quote }}
   DISABLE_TRACKING: {{ .Values.config.disableTracking | quote }}
