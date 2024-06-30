@@ -33,7 +33,7 @@ shlink:
       tag: "4.1"
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
     hpa:
       enabled: true
     vpa:
