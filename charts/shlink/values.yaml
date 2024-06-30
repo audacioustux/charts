@@ -32,12 +32,16 @@ shlink:
       repository: shlinkio/shlink
       tag: "4.1"
     resources:
+      limits:
+        memory: 512Mi
       requests:
         cpu: 200m
+        memory: 256Mi
     hpa:
       enabled: true
-    vpa:
-      enabled: false
+      minReplicas: 2
+      maxReplicas: 10
+      targetCPU: 80
 webClient:
   ports:
   - port: 80
