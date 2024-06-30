@@ -36,6 +36,7 @@ spec:
           httpGet:
             path: /rest/health
             port: http
+          timeoutSeconds: 10
         name: shlink-server
         ports:
         - containerPort: 8080
