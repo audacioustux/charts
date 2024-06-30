@@ -31,12 +31,12 @@ shlink:
     image:
       repository: shlinkio/shlink
       tag: "4.1"
-    resources:
-      limits:
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 256Mi
+    # resources:
+    #   limits:
+    #     memory: 1Gi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 256Mi
   hpa:
     enabled: true
   vpa:
@@ -50,10 +50,10 @@ webClient:
     image:
       repository: shlinkio/shlink-web-client
       tag: "4.1"
-    resources:
-      limits:
-        memory: 64Mi
-      requests:
-        cpu: 10m
-        memory: 32Mi
+    # resources:
+    #   limits:
+    #     memory: 64Mi
+    #   requests:
+    #     cpu: 20m
+    #     memory: 32Mi
   type: ClusterIP
