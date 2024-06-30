@@ -26,14 +26,14 @@ server:
 persistence: 
   storageClass: ""
 shlink:
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 2
   shlinkServer:
     image:
       repository: shlinkio/shlink
       tag: "4.1"
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
     hpa:
       enabled: true
     vpa:
