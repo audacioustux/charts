@@ -37,6 +37,10 @@ shlink:
       requests:
         cpu: 100m
         memory: 256Mi
+  hpa:
+    enabled: true
+  vpa:
+    enabled: false
 webClient:
   ports:
   - port: 80

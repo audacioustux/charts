@@ -12,6 +12,7 @@ spec:
   ports:
 	{{- .Values.server.ports | toYaml | nindent 2 }}
 ---
+{{- if .Values.shlink.hpa.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -32,6 +33,31 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: shlink-server
+{{- end }}
+---
+{{- if .Values.shlink.vpa.enabled }}
+kind: VerticalPodAutoscaler
+apiVersion: autoscaling.k8s.io/v1
+metadata:
+  name: {{ include "shlink.fullname" . }}-server
+  labels:
+  {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       "Deployment"
+    name:       "shlink-server"
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+    - containerName: "*"
+      minAllowed:
+        memory: "128Mi"
+      maxAllowed:
+        memory: "512Mi"
+      controlledResources: ["memory"]
+{{- end }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
