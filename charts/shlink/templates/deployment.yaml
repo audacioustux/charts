@@ -45,6 +45,7 @@ spec:
           httpGet:
             path: /rest/health
             port: http
+          timeoutSeconds: 2
         {{- if .Values.shlink.shlinkServer.resources }}
         resources: {{- toYaml .Values.shlink.shlinkServer.resources | nindent 10 }}
         {{- end }}
