@@ -55,6 +55,12 @@ webClient:
     image:
       repository: shlinkio/shlink-web-client
       tag: "4.1"
+    resources:
+      limits:
+        memory: 24Mi 
+      requests:
+        cpu: 10m
+        memory: 16Mi
     hpa:
       enabled: true
       minReplicas: 1

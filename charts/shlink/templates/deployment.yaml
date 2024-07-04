@@ -46,9 +46,7 @@ spec:
             path: /rest/health
             port: http
           timeoutSeconds: 2
-        {{- if .Values.shlink.shlinkServer.resources }}
         resources: {{- toYaml .Values.shlink.shlinkServer.resources | nindent 10 }}
-        {{- end }}
         volumeMounts:
         - mountPath: /etc/shlink/data
           name: data
@@ -93,6 +91,4 @@ spec:
           httpGet:
             path: /
             port: http
-        {{- if .Values.webClient.shlinkWebClient.resources }}
         resources: {{- toYaml .Values.webClient.shlinkWebClient.resources | nindent 10 }}
-        {{- end }}
