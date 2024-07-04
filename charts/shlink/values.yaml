@@ -55,4 +55,9 @@ webClient:
     image:
       repository: shlinkio/shlink-web-client
       tag: "4.1"
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPU: 80
   type: ClusterIP

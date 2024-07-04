@@ -12,6 +12,29 @@ spec:
   ports:
 	{{- .Values.webClient.ports | toYaml | nindent 2 }}
 ---
+{{- if .Values.webClient.shlinkWebClient.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "shlink.fullname" . }}-web-client
+  labels:
+  {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  maxReplicas: {{ .Values.webClient.shlinkWebClient.hpa.maxReplicas }}
+  minReplicas: {{ .Values.webClient.shlinkWebClient.hpa.minReplicas }}
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: {{ .Values.webClient.shlinkWebClient.hpa.targetCPU }}
+        type: Utilization
+    type: Resource
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "shlink.fullname" . }}-web-client
+{{- end }}
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
