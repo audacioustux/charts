@@ -42,7 +42,7 @@ metadata:
   labels:
   {{- include "shlink.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+    {{- toYaml .Values.webClient.annotations | nindent 4 }}
 spec:
   rules:
   - host: sl-admin.coderstrust.global

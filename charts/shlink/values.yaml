@@ -23,6 +23,7 @@ server:
     protocol: TCP
     targetPort: http
   type: ClusterIP
+  annotations: {}
 persistence: 
   storageClass: ""
 shlink:
@@ -51,6 +52,8 @@ webClient:
   - port: 80
     protocol: TCP
     targetPort: http
+  type: ClusterIP
+  annotations: {}
   shlinkWebClient:
     image:
       repository: shlinkio/shlink-web-client
@@ -66,4 +69,3 @@ webClient:
       minReplicas: 1
       maxReplicas: 10
       targetCPU: 80
-  type: ClusterIP
