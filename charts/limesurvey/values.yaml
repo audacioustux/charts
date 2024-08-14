@@ -23,22 +23,6 @@ serviceAccount:
   annotations: {}
   name: ""
 
-## MariaDB chart configuration
-mariadb:
-  # Deploy a MariaDB server to satisfy the database requirements
-  enabled: false
-  # for all possible configuration values, see:
-  # https://github.com/bitnami/charts/blob/master/bitnami/mariadb/values.yaml
-  auth:
-    # MariaDB root password
-    rootPassword: ""
-    # MariaDB custom database
-    database: limesurvey
-    # MariaDB custom user name
-    username: limesurvey
-    # MariaDB custom user password
-    password: null
-
 ## Use an externally provisioned database instance
 ## Ignored when mariadb.enabled is set to true
 externalDatabase:
