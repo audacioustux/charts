@@ -24,12 +24,11 @@ serviceAccount:
   name: ""
 
 ## Use an externally provisioned database instance
-## Ignored when mariadb.enabled is set to true
 externalDatabase:
   # Type of external database ("mysql" or "pgsql")
   type: mysql
   # External Database server host
-  host: mariadb.example.com
+  host: mysql.example.com
   # External Database server port
   port: 3306
   # External Database username (use existingSecretConfig.usernameField to load from secret)
