@@ -47,26 +47,6 @@ tests:
             name: DB_PASSWORD
           any: true
 
-  - it: deployment with mariadb
-    release:
-      name: my-ls
-    set:
-      ### Helm values:
-      mariadb:
-        enabled: true
-      ###
-    asserts:
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            value: my-ls-mariadb
-          any: true
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: DB_PASSWORD
-          any: true
-
   - it: deployment with encryption keys
     release:
       name: my-ls

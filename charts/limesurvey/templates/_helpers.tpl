@@ -23,10 +23,6 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{- define "limesurvey.mariadb.fullname" -}}
-{{- printf "%s-mariadb" .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -67,13 +63,7 @@ Create the name of the service account to use
 Return the MariaDB Secret Name
 */}}
 {{- define "limesurvey.databaseSecretName" -}}
-{{- if .Values.mariadb.enabled }}
-    {{- if .Values.mariadb.auth.existingSecret -}}
-        {{- printf "%s" .Values.mariadb.auth.existingSecret -}}
-    {{- else -}}
-        {{- printf "%s" (include "limesurvey.mariadb.fullname" .) -}}
-    {{- end -}}
-{{- else if .Values.externalDatabase.existingSecret -}}
+{{- if .Values.externalDatabase.existingSecret -}}
     {{- printf "%s" .Values.externalDatabase.existingSecret -}}
 {{- else -}}
     {{- printf "%s-db-secrets" (include "limesurvey.fullname" .) -}}
