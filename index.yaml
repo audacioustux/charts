@@ -3,6 +3,25 @@ entries:
   limesurvey:
   - apiVersion: v2
     appVersion: 6-apache
+    created: "2024-08-15T04:49:05.899402182Z"
+    description: Limesurvey is the number one open-source survey software.
+    digest: 0a37f9cb0524028d526f8e42c2d1a59f585ece597a150a4a33d7bd4a5fb1e855
+    icon: https://raw.githubusercontent.com/audacioustux/charts/master/limesurvey/icon.png
+    maintainers:
+    - email: tanjimhossain.pro@gmail.com
+      name: Tanjim Hossain
+    name: limesurvey
+    sources:
+    - https://github.com/audacioustux/charts
+    - https://github.com/martialblog/helm-charts
+    - https://github.com/martialblog/docker-limesurvey/
+    - https://limesurvey.org/
+    type: application
+    urls:
+    - https://github.com/audacioustux/charts/releases/download/limesurvey-0.9.1/limesurvey-0.9.1.tgz
+    version: 0.9.1
+  - apiVersion: v2
+    appVersion: 6-apache
     created: "2024-08-14T18:47:30.555004795Z"
     description: Limesurvey is the number one open-source survey software.
     digest: 7b3362f2810e78e34cd7749d3a86fd24f79b16248be338b5116dcb770cf5d04a
@@ -597,4 +616,4 @@ entries:
     urls:
     - https://github.com/audacioustux/charts/releases/download/shlink-4.1.3/shlink-4.1.3.tgz
     version: 4.1.3
-generated: "2024-08-14T18:47:30.555157582Z"
+generated: "2024-08-15T04:49:05.899551699Z"
