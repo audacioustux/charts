@@ -93,6 +93,10 @@ spec:
           env:
             - name: DB_TYPE
               value: {{ .Values.externalDatabase.type }}
+            {{- if eq .Values.externalDatabase.type "mysql" }}
+            - name: DBENGINE
+              value: {{ .Values.externalDatabase.engine | default "InnoDB" }}
+            {{- end }}
             - name: DB_HOST
               value: {{ .Values.externalDatabase.host }}
             - name: DB_PORT
