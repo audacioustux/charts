@@ -80,7 +80,7 @@ limesurvey:
   # LimeSurvey SQL Debug level (0, 1, 2)
   debugSql: 0
   # Value should be either MyISAM or InnoDB
-  mysqlEngine: MyISAM
+  mysqlEngine: InnoDB
   # Probes, disable them when you enable global ssl enforcement, because they won't work with the redirect to https
   livenessProbe:
     enabled: true
