@@ -95,7 +95,7 @@ spec:
               value: {{ .Values.externalDatabase.type }}
             {{- if eq .Values.externalDatabase.type "mysql" }}
             - name: DBENGINE
-              value: {{ .Values.externalDatabase.engine | default "InnoDB" }}
+              value: {{ .Values.limesurvey.mysqlEngine }}
             {{- end }}
             - name: DB_HOST
               value: {{ .Values.externalDatabase.host }}
