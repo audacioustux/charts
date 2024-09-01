@@ -35,7 +35,7 @@ externalDatabase:
   username: limesurvey
   # External Database user password
   # (ignored when existingSecret is set, use existingSecretConfig.passwordField to change key)
-  password: null
+  password: nulla
   # External Database database name (use existingSecretConfig.databaseField to load from secret)
   database: limesurvey
   # Use an existing secret for retrieving the database password.
