@@ -9,7 +9,7 @@ metadata:
   annotations:
 {{ toYaml . | indent 4 }}
   {{- end }}
-  {{- with .Values.persistence.finalizers  }}
+  {{- with .Values.persistence.finalizers }}
   finalizers:
 {{ toYaml . | indent 4 }}
   {{- end }}
@@ -29,4 +29,30 @@ spec:
     matchLabels:
 {{ toYaml . | indent 6 }}
   {{- end }}
+{{- end -}}
+
+{{- if .Values.tmpPersistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "limesurvey.fullname" . }}-tmp
+  labels:
+    {{- include "limesurvey.labels" . | nindent 4 }}
+  {{- with .Values.tmpPersistence.annotations  }}
+  annotations:
+{{ toYaml . | indent 4 }}
+  {{- end }}
+  {{- with .Values.tmpPersistence.finalizers }}
+  finalizers:
+{{ toYaml . | indent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.tmpPersistence.size | quote }}
+  {{- if .Values.tmpPersistence.storageClassName }}
+  storageClassName: {{ .Values.tmpPersistence.storageClassName }}
+  {{- end -}}
 {{- end -}}

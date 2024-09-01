@@ -104,6 +104,12 @@ persistence:
   subPath: ""
   existingClaim: null
 
+tmpPersistence:
+  enabled: false
+  size: 10Gi
+  finalizers:
+    - kubernetes.io/pvc-protection
+
 ## This allows you to mount additional volumes
 ## into the Limesurvey container
 extraVolumeMounts: []

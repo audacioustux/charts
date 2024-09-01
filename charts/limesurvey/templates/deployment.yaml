@@ -80,6 +80,10 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
+            {{- if .Values.tmpPersistence.enabled }}
+            - name: tmp
+              mountPath: "/tmp"
+            {{- end }}
           {{- range .Values.extraVolumeMounts }}
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
@@ -218,6 +222,11 @@ spec:
             claimName: {{ .Values.persistence.existingClaim | default (include "limesurvey.fullname" .) }}
       {{- else }}
           emptyDir: {}
+      {{- end -}}
+        - name: tmp
+      {{- if .Values.tmpPersistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "limesurvey.fullname" . }}-tmp
       {{- end -}}
       {{- range .Values.extraVolumeMounts }}
         - name: {{ .name }}
