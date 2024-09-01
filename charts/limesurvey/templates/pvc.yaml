@@ -30,7 +30,7 @@ spec:
 {{ toYaml . | indent 6 }}
   {{- end }}
 {{- end -}}
-
+---
 {{- if and .Values.tmpPersistence.enabled (not .Values.tmpPersistence.existingClaim) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
