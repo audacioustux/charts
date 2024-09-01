@@ -80,11 +80,11 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
-            {{- if .Values.tmpPersistence.enabled }}
-            - name: tmp
-              mountPath: "/var/www/html/tmp/"
-              {{- if .Values.tmpPersistence.subPath }}
-              subPath: {{ .Values.tmpPersistence.subPath }}
+            {{- if .Values.assetsPersistence.enabled }}
+            - name: assets
+              mountPath: "/var/www/html/tmp/assets/"
+              {{- if .Values.assetsPersistence.subPath }}
+              subPath: {{ .Values.assetsPersistence.subPath }}
               {{- end }}
             {{- end }}
           {{- range .Values.extraVolumeMounts }}
@@ -226,10 +226,10 @@ spec:
       {{- else }}
           emptyDir: {}
       {{- end -}}
-      {{- if .Values.tmpPersistence.enabled }}
-        - name: tmp
+      {{- if .Values.assetsPersistence.enabled }}
+        - name: assets
           persistentVolumeClaim:
-            claimName: {{ include "limesurvey.fullname" . }}-tmp
+            claimName: {{ include "limesurvey.fullname" . }}-assets
       {{- end -}}
       {{- range .Values.extraVolumeMounts }}
         - name: {{ .name }}

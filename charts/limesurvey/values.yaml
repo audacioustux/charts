@@ -104,7 +104,7 @@ persistence:
   subPath: ""
   existingClaim: null
 
-tmpPersistence:
+assetsPersistence:
   enabled: true
   storageClassName: null
   accessModes:

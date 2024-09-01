@@ -31,33 +31,33 @@ spec:
   {{- end }}
 {{- end -}}
 ---
-{{- if and .Values.tmpPersistence.enabled (not .Values.tmpPersistence.existingClaim) }}
+{{- if and .Values.assetsPersistence.enabled (not .Values.assetsPersistence.existingClaim) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "limesurvey.fullname" . }}-tmp
+  name: {{ template "limesurvey.fullname" . }}-assets
   labels:
     {{- include "limesurvey.labels" . | nindent 4 }}
-  {{- with .Values.tmpPersistence.annotations  }}
+  {{- with .Values.assetsPersistence.annotations  }}
   annotations:
 {{ toYaml . | indent 4 }}
   {{- end }}
-  {{- with .Values.tmpPersistence.finalizers }}
+  {{- with .Values.assetsPersistence.finalizers }}
   finalizers:
 {{ toYaml . | indent 4 }}
   {{- end }}
 spec:
   accessModes:
-    {{- range .Values.tmpPersistence.accessModes }}
+    {{- range .Values.assetsPersistence.accessModes }}
     - {{ . | quote }}
     {{- end }}
   resources:
     requests:
-      storage: {{ .Values.tmpPersistence.size | quote }}
-  {{- if .Values.tmpPersistence.storageClassName }}
-  storageClassName: {{ .Values.tmpPersistence.storageClassName }}
+      storage: {{ .Values.assetsPersistence.size | quote }}
+  {{- if .Values.assetsPersistence.storageClassName }}
+  storageClassName: {{ .Values.assetsPersistence.storageClassName }}
   {{- end -}}
-  {{- with .Values.tmpPersistence.selectorLabels }}
+  {{- with .Values.assetsPersistence.selectorLabels }}
   selector:
     matchLabels:
 {{ toYaml . | indent 6 }}
