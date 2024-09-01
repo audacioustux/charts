@@ -31,7 +31,7 @@ spec:
   {{- end }}
 {{- end -}}
 
-{{- if .Values.tmpPersistence.enabled }}
+{{- if and .Values.tmpPersistence.enabled (not .Values.tmpPersistence.existingClaim) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -48,11 +48,18 @@ metadata:
   {{- end }}
 spec:
   accessModes:
-    - ReadWriteMany
+    {{- range .Values.tmpPersistence.accessModes }}
+    - {{ . | quote }}
+    {{- end }}
   resources:
     requests:
       storage: {{ .Values.tmpPersistence.size | quote }}
   {{- if .Values.tmpPersistence.storageClassName }}
   storageClassName: {{ .Values.tmpPersistence.storageClassName }}
   {{- end -}}
+  {{- with .Values.tmpPersistence.selectorLabels }}
+  selector:
+    matchLabels:
+{{ toYaml . | indent 6 }}
+  {{- end }}
 {{- end -}}

@@ -106,9 +106,16 @@ persistence:
 
 tmpPersistence:
   enabled: false
+  storageClassName: null
+  accessModes:
+    - ReadWriteOnce
   size: 10Gi
+  annotations: {}
   finalizers:
     - kubernetes.io/pvc-protection
+  selectorLabels: {}
+  subPath: ""
+  existingClaim: null
 
 ## This allows you to mount additional volumes
 ## into the Limesurvey container
