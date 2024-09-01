@@ -82,7 +82,10 @@ spec:
               {{- end }}
             {{- if .Values.tmpPersistence.enabled }}
             - name: tmp
-              mountPath: "/tmp"
+              mountPath: "/var/www/html/tmp/"
+              {{- if .Values.tmpPersistence.subPath }}
+              subPath: {{ .Values.tmpPersistence.subPath }}
+              {{- end }}
             {{- end }}
           {{- range .Values.extraVolumeMounts }}
             - name: {{ .name }}
