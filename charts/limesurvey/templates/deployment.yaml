@@ -223,8 +223,8 @@ spec:
       {{- else }}
           emptyDir: {}
       {{- end -}}
-        - name: tmp
       {{- if .Values.tmpPersistence.enabled }}
+        - name: tmp
           persistentVolumeClaim:
             claimName: {{ include "limesurvey.fullname" . }}-tmp
       {{- end -}}
