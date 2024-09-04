@@ -23,7 +23,7 @@ shlinkServer:
     port: 80
     annotations: {}
   ingress:
-    enabled: false
+    enabled: true
     className: ""
     annotations: {}
     hosts:
@@ -74,7 +74,7 @@ shlinkClient:
     port: 80
     annotations: {}
   ingress:
-    enabled: false
+    enabled: true
     className: ""
     annotations: {}
     hosts:
