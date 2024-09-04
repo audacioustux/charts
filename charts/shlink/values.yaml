@@ -1,71 +1,85 @@
-config:
-  shellVerbosity: 0
-  dbDriver: mysql
-  dbHost: shlink-mysql
-  defaultDomain: "sl.example.com"
-  isHttpsEnabled: true
-  anonymizeRemoteAddr: true
-  skipInitialGeoliteDownload: false
-  redisServers: shlink-redis
-  redisPubSubEnabled: true
-  cacheNamespace: shlink
-  disableIpTracking: false
-  disableTracking: false
-kubernetesClusterDomain: cluster.local
-secret:
-  dbUser: shlink
-  dbPassword: shlink
-  geoliteLicenseKey: ""
-  initialApiKey: ""
-server:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: http
-  type: ClusterIP
-  annotations: {}
-persistence: 
-  storageClass: ""
-shlink:
-  revisionHistoryLimit: 2
-  shlinkServer:
-    image:
-      repository: shlinkio/shlink
-      tag: "4.1"
-    resources:
-      limits:
-        memory: 384Mi
-      requests:
-        cpu: 200m
-        memory: 256Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 10
-      targetCPU: 80
-    vpa:
-      enabled: false
-      minMemory: 128Mi
-      maxMemory: 512Gi
-webClient:
-  ports:
-  - port: 80
-    protocol: TCP
-    targetPort: http
-  type: ClusterIP
-  annotations: {}
-  shlinkWebClient:
-    image:
-      repository: shlinkio/shlink-web-client
-      tag: "4.1"
-    resources:
-      limits:
-        memory: 24Mi 
-      requests:
-        cpu: 10m
-        memory: 16Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 10
-      targetCPU: 80
+shlinkServer:
+  enabled: true
+  image:
+    repository: shlinkio/shlink
+    tag: "4.1"
+  resources:
+    limits:
+      memory: 384Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPU: 80
+  vpa:
+    enabled: false
+    minMemory: 128Mi
+    maxMemory: 512Gi
+  service:
+    type: ClusterIP
+    port: 80
+    annotations: {}
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: example.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+  config:
+    shellVerbosity: 0
+    dbDriver: mysql
+    dbHost: shlink-mysql
+    defaultDomain: "example.com"
+    isHttpsEnabled: true
+    anonymizeRemoteAddr: true
+    skipInitialGeoliteDownload: false
+    redisServers: shlink-redis
+    redisPubSubEnabled: true
+    cacheNamespace: shlink
+    disableIpTracking: false
+    disableTracking: false
+  secret:
+    dbUser: shlink
+    dbPassword: shlink
+    geoliteLicenseKey: ""
+    initialApiKey: ""
+  persistence: 
+    storageClass: ""
+
+shlinkClient:
+  enabled: true
+  image:
+    repository: shlinkio/shlink-web-client
+    tag: "4.1"
+  resources:
+    limits:
+      memory: 24Mi 
+    requests:
+      cpu: 10m
+      memory: 16Mi
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPU: 80
+  service:
+    type: ClusterIP
+    port: 80
+    annotations: {}
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+    hosts:
+      - host: admin.example.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []

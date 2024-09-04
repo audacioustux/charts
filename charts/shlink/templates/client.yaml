@@ -1,0 +1,126 @@
+{{- if and .Values.shlinkClient.enabled .Values.shlinkClient.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "shlink.fullname" . }}-client
+  labels:
+  {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  maxReplicas: {{ .Values.shlinkClient.hpa.maxReplicas }}
+  minReplicas: {{ .Values.shlinkClient.hpa.minReplicas }}
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: {{ .Values.shlinkClient.hpa.targetCPU }}
+        type: Utilization
+    type: Resource
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "shlink.fullname" . }}-client
+{{- end }}
+---
+{{- if .Values.shlinkClient.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "shlink.fullname" . }}-client
+  labels:
+    {{- include "shlink.labels" . | nindent 4 }}
+  {{- with .Values.shlinkClient.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.shlinkClient.service.type }}
+  selector:
+    app: {{ include "shlink.fullname" . }}-client
+    {{- include "shlink.selectorLabels" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.shlinkClient.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+{{- end }}
+---
+{{- if and .Values.shlinkClient.enabled .Values.shlinkClient.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "shlink.fullname" . }}-client
+  labels:
+    {{- include "shlink.labels" . | nindent 4 }}
+  {{- with .Values.shlinkClient.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.shlinkClient.ingress.className }}
+  ingressClassName: {{ .Values.shlinkClient.ingress.className }}
+  {{- end }}
+  {{- if .Values.shlinkClient.ingress.tls }}
+  tls:
+    {{- range .Values.shlinkClient.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.shlinkClient.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if .pathType }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ include "shlink.fullname" . }}-client
+                port: 
+                  name: http
+          {{- end }}
+    {{- end }}
+{{- end }}
+---
+{{- if .Values.shlinkClient.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shlink.fullname" . }}-client
+  labels:
+    app: {{ include "shlink.fullname" . }}-client
+  {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: shlink-client
+    {{- include "shlink.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "shlink.fullname" . }}-client
+      {{- include "shlink.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - image: {{ .Values.shlinkClient.image.repository }}:{{ .Values.shlinkClient.image.tag | default .Chart.AppVersion }}
+        name: shlink-client
+        ports:
+        - containerPort: 8080
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        resources: {{- toYaml .Values.shlinkClient.resources | nindent 10 }}
+{{- end }}

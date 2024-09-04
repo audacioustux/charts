@@ -1,18 +1,57 @@
+{{- if .Values.shlinkServer.enabled }}
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: {{ include "shlink.fullname" . }}-server
+  name: {{ include "shlink.fullname" . }}-config
   labels:
   {{- include "shlink.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.server.type }}
-  selector:
-    app: shlink-server
-  {{- include "shlink.selectorLabels" . | nindent 4 }}
-  ports:
-	{{- .Values.server.ports | toYaml | nindent 2 }}
+data:
+  SHELL_VERBOSITY: {{ .Values.shlinkServer.config.shellVerbosity | quote }}
+  DB_DRIVER: {{ .Values.shlinkServer.config.dbDriver | quote }}
+  DB_HOST: {{ .Values.shlinkServer.config.dbHost | quote }}
+  DEFAULT_DOMAIN: {{ .Values.shlinkServer.config.defaultDomain | quote }}
+  IS_HTTPS_ENABLED: {{ .Values.shlinkServer.config.isHttpsEnabled | quote }}
+  ANONYMIZE_REMOTE_ADDR: {{ .Values.shlinkServer.config.anonymizeRemoteAddr | quote }}
+  SKIP_INITIAL_GEOLITE_DOWNLOAD: {{ .Values.shlinkServer.config.skipInitialGeoliteDownload | quote }}
+  REDIS_SERVERS: {{ .Values.shlinkServer.config.redisServers | quote }}
+  REDIS_PUB_SUB_ENABLED: {{ .Values.shlinkServer.config.redisPubSubEnabled | quote }}
+  CACHE_NAMESPACE: {{ .Values.shlinkServer.config.cacheNamespace | quote }}
+  DISABLE_IP_TRACKING: {{ .Values.shlinkServer.config.disableIpTracking | quote }}
+  DISABLE_TRACKING: {{ .Values.shlinkServer.config.disableTracking | quote }}
+{{- end }}
 ---
-{{- if .Values.shlink.shlinkServer.hpa.enabled }}
+{{- if .Values.shlinkServer.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "shlink.fullname" . }}-secret
+  labels:
+  {{- include "shlink.labels" . | nindent 4 }}
+stringData:
+  DB_USER: {{ required "shlinkServer.secret.dbUser is required" .Values.shlinkServer.secret.dbUser | quote }}
+  DB_PASSWORD: {{ required "shlinkServer.secret.dbPassword is required" .Values.shlinkServer.secret.dbPassword | quote }}
+  GEOLITE_LICENSE_KEY: {{ required "shlinkServer.secret.geoliteLicenseKey is required" .Values.shlinkServer.secret.geoliteLicenseKey | quote }}
+  INITIAL_API_KEY: {{ required "shlinkServer.secret.initialApiKey is required" .Values.shlinkServer.secret.initialApiKey | quote }}
+type: Opaque
+{{- end }}
+---
+{{- if .Values.shlinkServer.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "shlink.fullname" . }}-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  {{- if .Values.shlinkServer.persistence.storageClass }}
+  storageClassName: {{ .Values.shlinkServer.persistence.storageClass }}
+  {{- end }}
+{{- end }}
+---
+{{- if and .Values.shlinkServer.enabled .Values.shlinkServer.hpa.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -20,13 +59,13 @@ metadata:
   labels:
   {{- include "shlink.labels" . | nindent 4 }}
 spec:
-  maxReplicas: {{ .Values.shlink.shlinkServer.hpa.maxReplicas }}
-  minReplicas: {{ .Values.shlink.shlinkServer.hpa.minReplicas }}
+  maxReplicas: {{ .Values.shlinkServer.hpa.maxReplicas }}
+  minReplicas: {{ .Values.shlinkServer.hpa.minReplicas }}
   metrics:
   - resource:
       name: cpu
       target:
-        averageUtilization: {{ .Values.shlink.shlinkServer.hpa.targetCPU }}
+        averageUtilization: {{ .Values.shlinkServer.hpa.targetCPU }}
         type: Utilization
     type: Resource
   scaleTargetRef:
@@ -35,7 +74,7 @@ spec:
     name: {{ include "shlink.fullname" . }}-server
 {{- end }}
 ---
-{{- if .Values.shlink.shlinkServer.vpa.enabled }}
+{{- if and .Values.shlinkServer.enabled .Values.shlinkServer.vpa.enabled }}
 apiVersion: "autoscaling.k8s.io/v1"
 kind: VerticalPodAutoscaler
 metadata:
@@ -54,32 +93,129 @@ spec:
     - containerName: "shlink-server"
       controlledResources: ["memory"]
       minAllowed:
-        memory: {{ .Values.shlink.shlinkServer.vpa.minMemory }}
+        memory: {{ .Values.shlinkServer.vpa.minMemory }}
       maxAllowed:
-        memory: {{ .Values.shlink.shlinkServer.vpa.maxMemory }}
+        memory: {{ .Values.shlinkServer.vpa.maxMemory }}
 {{- end }}
 ---
+{{- if .Values.shlinkServer.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "shlink.fullname" . }}-server
+  labels:
+    {{- include "shlink.labels" . | nindent 4 }}
+  {{- with .Values.shlinkServer.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.shlinkServer.service.type }}
+  selector:
+    app: {{ include "shlink.fullname" . }}-server
+    {{- include "shlink.selectorLabels" . | nindent 4 }}
+  ports:
+    - port: {{ .Values.shlinkServer.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+{{- end }}
+---
+{{- if and .Values.shlinkServer.enabled .Values.shlinkServer.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "shlink.fullname" . }}-server
   labels:
-  {{- include "shlink.labels" . | nindent 4 }}
+    {{- include "shlink.labels" . | nindent 4 }}
+  {{- with .Values.shlinkServer.ingress.annotations }}
   annotations:
-    {{- toYaml .Values.webClient.annotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  rules:
-  - host: sl.coderstrust.global
-    http:
-      paths:
-      - backend:
-          service:
-            name: '{{ include "shlink.fullname" . }}-server'
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
+  {{- if .Values.shlinkServer.ingress.className }}
+  ingressClassName: {{ .Values.shlinkServer.ingress.className }}
+  {{- end }}
+  {{- if .Values.shlinkServer.ingress.tls }}
   tls:
-  - hosts:
-    - sl.coderstrust.global
-    secretName: sl-tls
+    {{- range .Values.shlinkServer.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.shlinkServer.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if .pathType }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ include "shlink.fullname" . }}-server
+                port: 
+                  name: http
+          {{- end }}
+    {{- end }}
+{{- end }}
+---
+{{- if .Values.shlinkClient.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "shlink.fullname" . }}-server
+  labels:
+    app: {{ include "shlink.fullname" . }}-server
+  {{- include "shlink.labels" . | nindent 4 }}
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: {{ include "shlink.fullname" . }}-server
+    {{- include "shlink.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "shlink.fullname" . }}-server
+      {{- include "shlink.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: shlink
+        image: {{ .Values.shlinkServer.image.repository }}:{{ .Values.shlinkServer.image.tag | default .Chart.AppVersion }}
+        envFrom:
+        - configMapRef:
+            name: {{ include "shlink.fullname" . }}-config
+        - secretRef:
+            name: {{ include "shlink.fullname" . }}-secret
+        livenessProbe:
+          httpGet:
+            path: /rest/health
+            port: http
+          timeoutSeconds: 10
+        ports:
+        - containerPort: 8080
+          name: http
+        readinessProbe:
+          httpGet:
+            path: /rest/health
+            port: http
+          timeoutSeconds: 2
+        resources: {{- toYaml .Values.shlinkServer.resources | nindent 10 }}
+        volumeMounts:
+        - mountPath: /etc/shlink/data
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ include "shlink.fullname" . }}-data
+{{- end }}
