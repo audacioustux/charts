@@ -53,8 +53,12 @@ shlinkServer:
     dbPassword: shlink
     geoliteLicenseKey: ""
     initialApiKey: ""
-  persistence: 
-    storageClass: ""
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteMany
+    size: 1Gi
+    # storageClass:
 
 shlinkClient:
   enabled: true

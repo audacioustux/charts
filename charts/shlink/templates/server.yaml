@@ -35,17 +35,19 @@ stringData:
 type: Opaque
 {{- end }}
 ---
-{{- if .Values.shlinkServer.enabled }}
+{{- if and .Values.shlinkServer.enabled .Values.shlinkServer.persistence.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "shlink.fullname" . }}-data
 spec:
   accessModes:
-  - ReadWriteMany
+    {{- range .Values.shlinkServer.persistence.accessModes }}
+    - {{ . }}
+    {{- end }}
   resources:
     requests:
-      storage: 1Gi
+      storage: {{ .Values.shlinkServer.persistence.size }}
   {{- if .Values.shlinkServer.persistence.storageClass }}
   storageClassName: {{ .Values.shlinkServer.persistence.storageClass }}
   {{- end }}
