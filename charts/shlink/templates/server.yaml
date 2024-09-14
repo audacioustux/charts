@@ -92,7 +92,7 @@ spec:
     updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
-    - containerName: "shlink-server"
+    - containerName: "*"
       controlledResources: ["memory"]
       minAllowed:
         memory: {{ .Values.shlinkServer.vpa.minMemory }}

@@ -105,7 +105,7 @@ spec:
       maxSurge: 1
   selector:
     matchLabels:
-      app: shlink-client
+      app: {{ include "shlink.fullname" . }}-client
     {{- include "shlink.selectorLabels" . | nindent 6 }}
   template:
     metadata:
@@ -115,7 +115,7 @@ spec:
     spec:
       containers:
       - image: {{ .Values.shlinkClient.image.repository }}:{{ .Values.shlinkClient.image.tag | default .Chart.AppVersion }}
-        name: shlink-client
+        name: shlink-web-client
         ports:
         - containerPort: 8080
           name: http
