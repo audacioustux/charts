@@ -36,7 +36,7 @@ shlinkServer:
             pathType: ImplementationSpecific
     tls: []
   config:
-    shellVerbosity: 0
+    # shellVerbosity: 3
     dbDriver: mysql
     dbHost: shlink-mysql
     defaultDomain: "example.com"
