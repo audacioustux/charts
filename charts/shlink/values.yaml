@@ -5,7 +5,7 @@ shlinkServer:
   enabled: true
   image:
     repository: shlinkio/shlink
-    tag: "4.1"
+    tag: "4.2"
   resources:
     limits:
       memory: 384Mi
