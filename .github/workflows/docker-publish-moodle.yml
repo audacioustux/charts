@@ -77,6 +77,7 @@ jobs:
           tags: |
             type=schedule
             type=match,pattern=moodle-v(\d+.\d+.\d+),group=1
+            type=match,pattern=moodle-v(\d+.\d+).\d+,group=1
             type=ref,event=branch
             type=ref,event=pr
             type=sha
