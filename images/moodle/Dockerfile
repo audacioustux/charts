@@ -1,4 +1,4 @@
-FROM bitnami/moodle:4.4-debian-12
+FROM bitnami/moodle:4.5
 
 USER root
 
