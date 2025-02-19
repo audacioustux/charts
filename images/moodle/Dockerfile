@@ -1,4 +1,4 @@
-FROM bitnami/moodle:4.5.2-debian-12-r0
+FROM docker.io/bitnami/moodle:4.5.2-debian-12-r0
 
 USER root
 
