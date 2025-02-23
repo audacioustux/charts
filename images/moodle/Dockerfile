@@ -16,8 +16,8 @@ RUN set -ex \
     && echo "extension=igbinary.so" >> /opt/bitnami/php/lib/php.ini \
     && rm -rvf /tmp/pear
 
-# enable cron
-RUN echo "0 * * * * daemon /opt/bitnami/php/bin/php /opt/bitnami/moodle/admin/cli/cron.php 2>&1 > /dev/null" > /etc/cron.d/moodle-cron
-RUN echo "* * * * * daemon /opt/bitnami/php/bin/php /opt/bitnami/moodle/admin/cli/adhoc_task.php --execute --keep-alive=59 2>&1 > /dev/null" >> /etc/cron.d/moodle-cron
+# enable cron (keep error logs in the container)
+RUN echo "0 * * * * daemon /opt/bitnami/php/bin/php /opt/bitnami/moodle/admin/cli/cron.php" >> /etc/cron.d/moodle
+RUN echo "* * * * * daemon /opt/bitnami/php/bin/php /opt/bitnami/moodle/admin/cli/adhoc_task.php --execute --keep-alive=59" >> /etc/cron.d/moodle
 
 USER 1001
